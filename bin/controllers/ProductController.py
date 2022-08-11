@@ -2,6 +2,9 @@ import json
 
 from bin.plainObject.Product import Product
 from bin.plainObject.ProductList import ProductList
+from bin.plainObject.ProductCommerceDetail import ProductCommerceDetail
+from bin.plainObject.Commerce import Commerce
+from bin.controllers.CommerceController import CommerceController
 from bin.database.SqlHelper import SqlHelper
 
 class ProductController:
@@ -11,7 +14,7 @@ class ProductController:
     def getAllProducts(self):
 
         sqlHelper = SqlHelper()
-        myresultPid = sqlHelper.select_get_product()
+        myresultPid = sqlHelper.select_product()
         productList = ProductList()
 
         for row in myresultPid:
@@ -24,7 +27,7 @@ class ProductController:
 
     def getProductById(self, idProduct):
         sqlHelper = SqlHelper()
-        myresultPid = sqlHelper.select_get_product_by_id(idProduct)
+        myresultPid = sqlHelper.select_product_by_id(idProduct)
 
         for row in myresultPid:
 
@@ -46,11 +49,12 @@ class ProductController:
         idCategory = jsonProduct['idCategory']
         imgUrl = jsonProduct['imgUrl']
         status = jsonProduct['status']
+        idCommerce = jsonProduct['idCommerce']
         product = Product(id, name, referencePrice, idCategory, imgUrl, status)
-        product.print()
 
-        #sqlHelper = SqlHelper()
-        #sqlHelper.insert_product(newProduct)
+        sqlHelper = SqlHelper()
+        sqlHelper.insert_product(product)
+
 
 
     def updateProduct(self, jsonProduct):

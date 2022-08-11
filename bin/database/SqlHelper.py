@@ -13,7 +13,7 @@ class SqlHelper:
         self.mycursor = self.db.cursor()
 
 #CRUD PRODUCT
-    def select_get_product(self):
+    def select_product(self):
         query = "select	   p.id," \
                 "          p.name, " \
                 "          p.reference_price, " \
@@ -26,7 +26,7 @@ class SqlHelper:
         self.mycursor.execute(query)
         return self.mycursor.fetchall()
 
-    def select_get_product_by_id(self, id):
+    def select_product_by_id(self, id):
         query = "select	   p.id," \
                 "          p.name, " \
                 "          p.reference_price, " \
@@ -60,7 +60,6 @@ class SqlHelper:
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
 
-#construir para sacar logica de la base de datos
     def insert_product(self, product):
 
         #esto es para cambiar el None del codigo a null de la base de datos
@@ -92,32 +91,75 @@ class SqlHelper:
         self.mycursor.execute("commit;")
 
 
-def insert_product_commerce_detail(self, productCommerceDetail):
+#CRUD PRODUCT_COMMERCE-DETAIL
+    def insert_product_commerce_detail(self, productCommerceDetail):
 
-    query = "INSERT" \
-            "INTO" \
-            "    `scraper`." \
-            "    `product_commerce_detail`" \
-            "    (" \
-            "        `id_product`," \
-            "        `id_commerce`," \
-            "        `url`" \
-            "    )" \
-            "    VALUES" \
-            "    (" \
-            "        (Select id" \
-            "        from `scraper`.`product`" \
-            "        order by 1 desc" \
-            "        limit 1" \
-            "         )," \
-            "        commerce_id," \
-            "        commerce_url" \
-            "    );"
+        query = "INSERT INTO product_commerce_detail " \
+                "    ( " \
+                "        id_product," \
+                "        id_commerce," \
+                "        url" \
+                "    ) " \
+                "    VALUES" \
+                "    ( " \
+                "         " + str(productCommerceDetail.idProduct) + ", " \
+                "         " + str(productCommerceDetail.idCommerce)+", " \
+                "         " + str(productCommerceDetail.url)+ "" \
+                "    );"
+
+        self.mycursor.execute(query)
+        self.mycursor.execute("commit;")
+
+    def select_commerce_by_id(self, idCommerce):
+
+        query = "select	    c.id, " \
+                "           c.name, " \
+                "           c.priceclass, " \
+                "           c.pricetag, " \
+                "           c.nameclass, " \
+                "           c.nametag " \
+                "from   commerce " \
+                "where id = " + str(idCommerce) + ";"
+
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
 
 
+#CRUD COMMMERCE
+    def insert_commerce(self, commerce):
 
+        query = " INSERT INTO `scraper`.`commerce` " \
+                "   ( " \
+                "   name, " \
+                "   priceclass, " \
+                "   pricetag, " \
+                "   nameclass, " \
+                "   nametag " \
+                "   ) " \
+                " VALUES " \
+                "   ( " \
+                "   '" + commerce.name + "', " \
+                "   '" + commerce.priceclass + "', " \
+                "   '" + commerce.pricetag + "', " \
+                "   '" + commerce.nameclass + "', " \
+                "   '" + commerce.nametag + "' " \
+                "   );"
 
+        self.mycursor.execute(query)
+        self.mycursor.execute("commit;")
 
+    def select_commerce(self):
+        query = " select " \
+                "   c.id, " \
+                "   c.name, " \
+                "   c.priceclass, " \
+                "   c.pricetag, " \
+                "   c.nameclass, " \
+                "   c.nametag " \
+                " from  commerce c; "
+
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
 
     # olds
 
@@ -236,8 +278,6 @@ def insert_product_commerce_detail(self, productCommerceDetail):
                 "); "
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
-
-
 
 
 

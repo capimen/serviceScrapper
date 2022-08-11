@@ -1,8 +1,5 @@
 import json
 
-from flask import jsonify
-
-
 class Product:
 
     def __init__(self, id, name, referencePrice, idCategory, imgUrl, status):
