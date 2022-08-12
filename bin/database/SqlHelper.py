@@ -14,6 +14,7 @@ class SqlHelper:
 
 #CRUD PRODUCT
     def select_product(self):
+
         query = "select	   p.id," \
                 "          p.name, " \
                 "          p.reference_price, " \
@@ -27,6 +28,7 @@ class SqlHelper:
         return self.mycursor.fetchall()
 
     def select_product_by_id(self, id):
+
         query = "select	   p.id," \
                 "          p.name, " \
                 "          p.reference_price, " \
@@ -37,28 +39,6 @@ class SqlHelper:
                 "where     p.id = " + str(id) + " ;"
         self.mycursor.execute(query)
         return self.mycursor.fetchall()
-
-    def update_product(self, product):
-
-        #esto es para cambiar el None del codigo a null de la base de datos
-        if product.imgUrl == None:
-
-            product.imgUrl = "null"
-
-        else:
-
-            product.imgUrl = str("'"+product.imgUrl+"'")
-
-        query = " UPDATE product " \
-                " SET " \
-                " name = '" + product.name + "'," \
-                " reference_price = " + product.referencePrice + "',"\
-                " id_category = " + str(product.idCategory) + ", " \
-                " img_url = " + product.imgUrl + ", " \
-                " status = " + str(product.status) + " " \
-                " WHERE id = " + str(product.id) + "; "
-        self.mycursor.execute(query)
-        self.mycursor.execute("commit;")
 
     def insert_product(self, product):
 
@@ -90,6 +70,30 @@ class SqlHelper:
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
 
+    def update_product(self, product):
+
+        #esto es para cambiar el None del codigo a null de la base de datos
+        if product.imgUrl == None:
+
+            product.imgUrl = "null"
+
+        else:
+
+            product.imgUrl = str("'"+product.imgUrl+"'")
+
+        query = " UPDATE product " \
+                " SET " \
+                " name = '" + product.name + "'," \
+                " reference_price = " + product.referencePrice + "',"\
+                " id_category = " + str(product.idCategory) + ", " \
+                " img_url = " + product.imgUrl + ", " \
+                " status = " + str(product.status) + " " \
+                " WHERE id = " + str(product.id) + "; "
+        self.mycursor.execute(query)
+        self.mycursor.execute("commit;")
+
+
+
 
 #CRUD PRODUCT_COMMERCE-DETAIL
     def insert_product_commerce_detail(self, productCommerceDetail):
@@ -110,6 +114,23 @@ class SqlHelper:
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
 
+
+
+
+#CRUD COMMMERCE
+    def select_commerce(self):
+        query = " select " \
+                "   c.id, " \
+                "   c.name, " \
+                "   c.priceclass, " \
+                "   c.pricetag, " \
+                "   c.nameclass, " \
+                "   c.nametag " \
+                " from  commerce c; "
+
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
     def select_commerce_by_id(self, idCommerce):
 
         query = "select	    c.id, " \
@@ -124,8 +145,6 @@ class SqlHelper:
         self.mycursor.execute(query)
         return self.mycursor.fetchall()
 
-
-#CRUD COMMMERCE
     def insert_commerce(self, commerce):
 
         query = " INSERT INTO `scraper`.`commerce` " \
@@ -148,18 +167,20 @@ class SqlHelper:
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
 
-    def select_commerce(self):
-        query = " select " \
-                "   c.id, " \
-                "   c.name, " \
-                "   c.priceclass, " \
-                "   c.pricetag, " \
-                "   c.nameclass, " \
-                "   c.nametag " \
-                " from  commerce c; "
+    def update_commerce(self, commerce):
 
-        self.mycursor.execute(query)
-        return self.mycursor.fetchall()
+        query = " UPDATE commerce " \
+                "   SET " \
+                "   name = " + commerce.name + ", " \
+                "   priceclass = " + commerce.priceclass + ", " \
+                "   pricetag = " + commerce.pricetag + ", " \
+                "   nameclass = " + commerce.nameclass + ", " \
+                "   nametag = " + commerce.nametag + " " \
+                " WHERE id = " + commerce.id + ";"
+
+
+
+
 
     # olds
 

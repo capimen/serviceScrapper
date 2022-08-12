@@ -4,40 +4,85 @@ import json
 from flask import Flask, request, jsonify
 
 from bin.API import apiProduct
-from bin.controllers.ProductController import ProductController
-
+from bin.API import apiCommerce
 app = Flask(__name__)
 
 
 
-
+#PRODUCT
 @app.route('/product/<id>', methods=['GET'])
-def get_Product(id):
+def get_product(id):
     return apiProduct.getProductById(id)
 
-
 @app.route('/product/', methods=['GET'])
-def get_AllProducts():
+def get_allProducts():
 
     return apiProduct.getAllProduct()
-
 
 @app.route('/product/', methods=['POST'])
 def create_product():
 
-# hay que corregir esta opcion, ya que la logica no deberia
-# ser guarda un producto sin tener en cuenta la pagina,
-# por lo mismo, acá debería funcionar con la logica del proceso
-# almacenado y simplificar la inserción
     productJson = json.loads(request.data)
     return apiProduct.createProduct(productJson)
 
-
 @app.route('/product/', methods=['PUT'])
-def update_record():
+def update_product():
 
     productJson = json.loads(request.data)
     return apiProduct.updateProduct(productJson)
+
+#TODO crear delete, que no borre, si no, ponga el estado del producto inactivo
+
+
+#COMMERCE
+@app.route('/commerce/<id>', methods=['GET'])
+def get_commerce(id):
+    return apiCommerce.getCommerceById(id)
+
+@app.route('/commerce/', methods=['GET'])
+def get_allCommerce():
+
+    return apiCommerce.getAllCommerce()
+
+@app.route('/commerce/', methods=['POST'])
+def create_commerce():
+
+    commerceJson = json.loads(request.data)
+    return apiCommerce.createCommerce(commerceJson)
+
+@app.route('/commerce/', methods=['PUT'])
+def update_commerce():
+
+    commerceJson = json.loads(request.data)
+    return apiCommerce.updateCommerce(commerceJson)
+
+
+
+#CATEGORY
+@app.route('/category/<id>', methods=['GET'])
+def get_category(id):
+    return apiCategory.getCategoryById(id)
+
+@app.route('/category/', methods=['GET'])
+def get_allCategory():
+
+    return apiCategory.getAllCategory()
+
+@app.route('/category/', methods=['POST'])
+def create_category():
+
+    categoryJson = json.loads(request.data)
+    return apiCategory.createCategory(categoryJson)
+
+@app.route('/category/', methods=['PUT'])
+def update_category():
+
+    categoryJson = json.loads(request.data)
+    return apiCategory.updateCategory(categoryJson)
+
+#PRODUCTCOMMERCEDETAIL
+#TODO crear logica de productCommerceDetail
+
 
 '''
 de acá en abajo son ejemplos

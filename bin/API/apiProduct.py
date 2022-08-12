@@ -28,5 +28,4 @@ def updateProduct(jsonProduct):
 
     productController = ProductController()
     product = productController.updateProduct(jsonProduct)
-    print(product.imgUrl)
     return jsonify(product.toList(product))
