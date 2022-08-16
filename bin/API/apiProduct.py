@@ -29,3 +29,9 @@ def updateProduct(jsonProduct):
     productController = ProductController()
     product = productController.updateProduct(jsonProduct)
     return jsonify(product.toList(product))
+
+def deleteProduct(idProduct):
+
+    productController = ProductController()
+    status = productController.deleteProduct(idProduct)
+    return status

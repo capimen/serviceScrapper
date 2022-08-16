@@ -58,3 +58,11 @@ class ProductController:
             product.imgUrl = None
 
         return product
+
+
+    def deleteProduct(self, productId):
+        sqlHelper = SqlHelper()
+        product = sqlHelper.getProductById(productId)
+        product.status = False
+        productUpdated = self.updateProduct(product.toJson())
+        return not productUpdated.status

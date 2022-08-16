@@ -31,7 +31,15 @@ def update_product():
     productJson = json.loads(request.data)
     return apiProduct.updateProduct(productJson)
 
-#TODO crear delete, que no borre, si no, ponga el estado del producto inactivo
+@app.route('/product/<id>', methods=['DELETE'])
+def delete_product(id):
+    status = apiProduct.deleteProduct(id)
+    resp = False
+    httpStatus = 401
+    if status == True:
+        resp = True
+        httpStatus = 200
+    return resp, httpStatus
 
 
 #COMMERCE
@@ -83,7 +91,13 @@ def update_category():
 #PRODUCTCOMMERCEDETAIL
 #TODO crear logica de productCommerceDetail
 
+@app.route('/pcd/product/<id>', methods=['GET'])
+def get_productCommerceDetail_by_product_id(id):
+    return apiProductCommerceDetail.getPCDByIdProduct(id)
 
+@app.route('/pcd/commerce/<id>', methods=['GET'])
+def get_productCommerceDetail_by_commerce_id(id):
+    return apiProductCommerceDetail.getPCDByIdCommerce(id)
 '''
 de acá en abajo son ejemplos
 https://codigofacilito.com/articulos/api-flask
