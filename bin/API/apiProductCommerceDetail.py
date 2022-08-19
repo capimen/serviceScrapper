@@ -1,6 +1,8 @@
 from flask import jsonify
 from bin.controllers.ProductCommerceDetailController import ProductCommerceDetailController
 
+productCommerceDetailController = ProductCommerceDetailController()
+
 
 def getPCDByIdProduct(idProduct):
 
@@ -8,17 +10,22 @@ def getPCDByIdProduct(idProduct):
 
         return jsonify({'error': 'data not found'})
 
-    productController = ProductController()
-    product = productController.getProductById(idProduct)
-    return jsonify(product.toList())
+
+    productCommerceDetail = productCommerceDetailController.getPCDByIdProduct(idProduct)
+    return jsonify(productCommerceDetail.toList())
 
 
-def getPCDByIdCommerce(idProduct):
+def getPCDByIdCommerce(idCommerce):
 
-    if idProduct == None:
+    if idCommerce == None:
 
         return jsonify({'error': 'data not found'})
 
-    productController = ProductController()
-    product = productController.getProductById(idProduct)
-    return jsonify(product.toList())
+    productCommerceDetail = productCommerceDetailController.getPCDByIdCommerce(idCommerce)
+    return jsonify(productCommerceDetail.toList())
+
+
+def createProductCommerceDetail(pdcJson):
+
+    productCommerceDetail = productCommerceDetailController.createProductCommerceDetail(pdcJson)
+    return jsonify(productCommerceDetail.toList())

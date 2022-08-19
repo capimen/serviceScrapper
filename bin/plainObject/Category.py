@@ -2,7 +2,7 @@ import json
 
 class Category:
 
-    def __int__(self, id, name, discount, idGroup):
+    def __init__(self, id, name, discount, idGroup):
         self.id = id
         self.name = name
         self.discount = discount

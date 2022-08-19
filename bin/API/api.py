@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 from bin.API import apiProduct
 from bin.API import apiCommerce
+from bin.API import apiCategory
+from bin.API import apiProductCommerceDetail
+from bin.API import apiHistorical
+from bin.API import apiComparator
 app = Flask(__name__)
 
 
-
-#PRODUCT
+# PRODUCT
 @app.route('/product/<id>', methods=['GET'])
 def get_product(id):
     return apiProduct.getProductById(id)
@@ -42,7 +45,7 @@ def delete_product(id):
     return resp, httpStatus
 
 
-#COMMERCE
+# COMMERCE
 @app.route('/commerce/<id>', methods=['GET'])
 def get_commerce(id):
     return apiCommerce.getCommerceById(id)
@@ -66,7 +69,7 @@ def update_commerce():
 
 
 
-#CATEGORY
+# CATEGORY
 @app.route('/category/<id>', methods=['GET'])
 def get_category(id):
     return apiCategory.getCategoryById(id)
@@ -88,9 +91,8 @@ def update_category():
     categoryJson = json.loads(request.data)
     return apiCategory.updateCategory(categoryJson)
 
-#PRODUCTCOMMERCEDETAIL
-#TODO crear logica de productCommerceDetail
 
+# PRODUCTCOMMERCEDETAIL
 @app.route('/pcd/product/<id>', methods=['GET'])
 def get_productCommerceDetail_by_product_id(id):
     return apiProductCommerceDetail.getPCDByIdProduct(id)
@@ -98,57 +100,33 @@ def get_productCommerceDetail_by_product_id(id):
 @app.route('/pcd/commerce/<id>', methods=['GET'])
 def get_productCommerceDetail_by_commerce_id(id):
     return apiProductCommerceDetail.getPCDByIdCommerce(id)
-'''
-de acá en abajo son ejemplos
-https://codigofacilito.com/articulos/api-flask
-'''
 
-'''
-@app.route('/', methods=['PUT'])
-def create_record():
-    record = json.loads(request.data)
-    with open('/home/capi/PycharmProjects/serviceScrapper/bin/API/tmp/data.txt', 'r') as f:
-        data = f.read()
-    if not data:
-        records = [record]
-    else:
-        records = json.loads(data)
-        records.append(record)
-    with open('/home/capi/PycharmProjects/serviceScrapper/bin/API/tmp/data.txt', 'w') as f:
-        f.write(json.dumps(records, indent=2))
-    return jsonify(record)
+@app.route('/pcd/', methods=['POST'])
+def create_productCommerceDetail():
+    pdcJson = json.loads(request.data)
+    return apiProductCommerceDetail.createProductCommerceDetail(pdcJson)
 
 
-@app.route('/', methods=['POST'])
-def update_record():
-    record = json.loads(request.data)
-    new_records = []
-    with open('/tmp/data.txt', 'r') as f:
-        data = f.read()
-        records = json.loads(data)
-    for r in records:
-        if r['name'] == record['name']:
-            r['email'] = record['email']
-        new_records.append(r)
-    with open('/tmp/data.txt', 'w') as f:
-        f.write(json.dumps(new_records, indent=2))
-    return jsonify(record)
+# HISTORICAL
+@app.route('/historical/product/<id>', methods=['GET'])
+def get_historical(id):
+    return apiHistorical.getHistoricalById(id)
 
 
-@app.route('/', methods=['DELETE'])
-def delete_record():
-    record = json.loads(request.data)
-    new_records = []
-    with open('/tmp/data.txt', 'r') as f:
-        data = f.read()
-        records = json.loads(data)
-        for r in records:
-            if r['name'] == record['name']:
-                continue
-            new_records.append(r)
-    with open('/tmp/data.txt', 'w') as f:
-        f.write(json.dumps(new_records, indent=2))
-    return jsonify(record)
-'''
+@app.route('/historical/deprecated', methods=['GET'])
+def get_allHistorical():
+    return apiHistorical.getAllHistorical()
+
+@app.route('/comparator/', methods=['GET'])
+def get_comparator():
+    return apiComparator.getAllComparator()
+
+@app.route('/comparator/count', methods=['GET'])
+def get_comparatorCount():
+    return apiComparator.getComparatorCount()
+
+@app.route('/comparator/<id>', methods=['GET'])
+def get_comparatorById(id):
+    return apiComparator.getComparatorById(id)
 
 app.run(debug=True)

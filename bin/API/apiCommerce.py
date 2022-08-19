@@ -15,7 +15,7 @@ def getCommerceById(idCommerce):
 
         return jsonify({'error': 'data not found'})
 
-    commerce = commerceController.getCommeceById(idCommerce)
+    commerce = commerceController.getCommerceById(idCommerce)
     return jsonify(commerce.toList())
 
 

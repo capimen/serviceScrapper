@@ -1,33 +1,37 @@
 import json
 
 
-class CommerceList:
+class CategoryList:
 
     def __init__(self):
-        self.CommerceList = []
+        self.CategoryList = []
 
-    def addCommerce(self, commerce):
-        self.CommerceList.append(commerce)
+
+    def addCategory(self, category):
+        self.CategoryList.append(category)
+
 
     def toJson(self):
 
         arr = {}
         arrlist = []
 
-        for item in self.CommerceList:
+        for item in self.CategoryList:
 
             arrlist.append(item.toList())
 
-        arr['commerceList'] = arrlist
+        arr['categoryList'] = arrlist
         return json.dumps(arr)
 
+
     def toList(self):
+
         arr = {}
         arrlist = []
 
-        for item in self.CommerceList:
+        for item in self.CategoryList:
 
             arrlist.append(item.toList())
 
-        arr['commerceList'] = arrlist
+        arr['categoryList'] = arrlist
         return arr

@@ -1,33 +1,37 @@
 import json
 
 
-class CommerceList:
+class HistoricalList:
 
     def __init__(self):
-        self.CommerceList = []
+        self.historicalList = []
 
-    def addCommerce(self, commerce):
-        self.CommerceList.append(commerce)
+
+    def addHistorical(self, prod):
+        self.historicalList.append(prod)
+
 
     def toJson(self):
 
         arr = {}
         arrlist = []
 
-        for item in self.CommerceList:
+        for item in self.historicalList:
 
             arrlist.append(item.toList())
 
-        arr['commerceList'] = arrlist
+        arr['historicalList'] = arrlist
         return json.dumps(arr)
 
+
     def toList(self):
+
         arr = {}
         arrlist = []
 
-        for item in self.CommerceList:
+        for item in self.historicalList:
 
             arrlist.append(item.toList())
 
-        arr['commerceList'] = arrlist
+        arr['historicalList'] = arrlist
         return arr

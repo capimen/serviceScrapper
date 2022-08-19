@@ -12,7 +12,7 @@ class Product:
 
     @classmethod
     def fromJson(self, jsonProduct):
-        self.id  = jsonProduct['id']
+        self.id = jsonProduct['id']
         self.name = jsonProduct['name']
         self.referencePrice = jsonProduct['referencePrice']
         self.idCategory = jsonProduct['idCategory']

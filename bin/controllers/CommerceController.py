@@ -10,6 +10,7 @@ class CommerceController:
     def getCommerceById(self, idCommerce):
 
         sqlHelper = SqlHelper()
+        print(idCommerce)
         myresultPid = sqlHelper.select_commerce_by_id(idCommerce)
 
         for row in myresultPid:
@@ -33,7 +34,7 @@ class CommerceController:
         return commerceList
 
 
-    def createProduct(self, jsonCommerce):
+    def createCommerce(self, jsonCommerce):
 
         id = jsonCommerce['id']
         name = jsonCommerce['name']

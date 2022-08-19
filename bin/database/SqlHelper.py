@@ -96,6 +96,35 @@ class SqlHelper:
 
 
 #CRUD PRODUCT_COMMERCE-DETAIL
+    def select_product_commerce_detail_by_idProduct(self, idProduct):
+
+        query = " SELECT " \
+                "   pcd.id , " \
+                "   pcd.id_product , " \
+                "   pcd.id_commerce , " \
+                "   pcd.url, " \
+                "   pcd.reg_date " \
+                " FROM product_commerce_detail pcd" \
+                " WHERE id_product = " + str(idProduct) + " ;"
+
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
+    def select_product_commerce_detail_by_idCommerce(self, idCommerce):
+
+        query = " SELECT " \
+                "   pcd.id , " \
+                "   pcd.id_product , " \
+                "   pcd.id_commerce , " \
+                "   pcd.url, " \
+                "   pcd.reg_date " \
+                " FROM product_commerce_detail pcd" \
+                " WHERE id_commerce = " + str(idCommerce) + " ;"
+
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
+
     def insert_product_commerce_detail(self, productCommerceDetail):
 
         query = "INSERT INTO product_commerce_detail " \
@@ -113,7 +142,6 @@ class SqlHelper:
 
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
-
 
 
 
@@ -139,8 +167,8 @@ class SqlHelper:
                 "           c.pricetag, " \
                 "           c.nameclass, " \
                 "           c.nametag " \
-                "from   commerce " \
-                "where id = " + str(idCommerce) + ";"
+                "from   commerce c " \
+                "where c.id = " + str(idCommerce) + " ;"
 
         self.mycursor.execute(query)
         return self.mycursor.fetchall()
@@ -177,9 +205,148 @@ class SqlHelper:
                 "   nameclass = " + commerce.nameclass + ", " \
                 "   nametag = " + commerce.nametag + " " \
                 " WHERE id = " + commerce.id + ";"
+        self.mycursor.execute(query)
+        self.mycursor.execute("commit;")
+
+
+#CRUD CATEGORY
+
+    def select_categories(self):
+
+        query = "SELECT c.id, " \
+                "       c.name, " \
+                "       c.discount, " \
+                "       c.id_group " \
+                "FROM   category c; "
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
+    def select_category_by_id(self,id):
+
+        query = "SELECT c.id, " \
+                "       c.name, " \
+                "       c.discount, " \
+                "       c.id_group " \
+                "FROM   category c " \
+                "WHERE  c.id = " + str(id) + " ;"
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
+    def insert_category(self, category):
+
+        query = " INSERT" \
+                " INTO category " \
+                "   (" \
+                "   name, " \
+                "   discount, " \
+                "   id_group " \
+                "   ) " \
+                "   VALUES " \
+                "   ( " \
+                "   " + category.name + " , " \
+                "   " + str(category.discount) + ", " \
+                "   " + str(category.idGroup) + " ); " \
+
+        self.mycursor.execute(query)
+        self.mycursor.execute("commit;")
+
+    def update_category(self, category):
+
+        query = " UPDATE category " \
+                " SET " \
+                "   name = " + category.name + " ," \
+                "   discount = " + str(category.discount) + " ," \
+                "   id_group = " + str(category.idGroup) + " " \
+                " WHERE id = " + str(category.id) + ";"
+        self.mycursor.execute(query)
+        self.mycursor.execute("commit;")
 
 
 
+#CRUD HISTORICAL
+
+    def select_historical(self, order):
+
+        query = "select	   h.id," \
+                "          h.id_product, " \
+                "          h.id_commerce, " \
+                "          h.id_product_commerce_detail, " \
+                "          h.price, " \
+                "          h.reg_date " \
+                "from  	   historical h " \
+                "order by h.reg_date " + order + " ; "
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
+    def select_historical_by_idProduct(self, idProduct, order):
+
+        query = "select	   h.id," \
+                "          h.id_product, " \
+                "          h.id_commerce, " \
+                "          h.id_product_commerce_detail, " \
+                "          h.price, " \
+                "          h.reg_date " \
+                "from  	   historical h " \
+                "where     h.id_product = " + str(idProduct) + " " \
+                "order by h.reg_date " + order + " ; "
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
+
+#CRUD COMPARATOR
+
+    def select_comparator_all(self):
+
+        query = " SELECT    id, " \
+                "           id_product, " \
+                "           product_name, " \
+                "           price_newest, " \
+                "           price_average, " \
+                "           price_best, " \
+                "           price_worst, " \
+                "           discount_priceleft, " \
+                "           discount_percent, " \
+                "           average_safe, " \
+                "           average_safe_worst, " \
+                "           diff_best, " \
+                "           url, " \
+                "           best_historical_flag, " \
+                "           umbral, " \
+                "           umbral_flag, " \
+                "           reg_date " \
+                "FROM comparator ; "
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
+
+    def select_comparator_by_idProduct(self, idProduct):
+        query = " SELECT    id, " \
+                "           id_product, " \
+                "           product_name, " \
+                "           price_newest, " \
+                "           price_average, " \
+                "           price_best, " \
+                "           price_worst, " \
+                "           discount_priceleft, " \
+                "           discount_percent, " \
+                "           average_safe, " \
+                "           average_safe_worst, " \
+                "           diff_best, " \
+                "           url, " \
+                "           best_historical_flag, " \
+                "           umbral, " \
+                "           umbral_flag, " \
+                "           reg_date " \
+                "FROM comparator " \
+                "WHERE id = " + str(idProduct) + " ;"
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
+    def select_comparator_count(self):
+        query = " SELECT    count(*) " \
+                " FROM   comparator ;"
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
 
 
     # olds

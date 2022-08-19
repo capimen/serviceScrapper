@@ -6,7 +6,7 @@ categoryController = CategoryController()
 
 def getAllCategory():
 
-    categoryList = categoryController.getAllCommerce()
+    categoryList = categoryController.getAllCategories()
     return jsonify(categoryList.toList())
 
 
@@ -25,7 +25,8 @@ def createCategory(jsonCategory):
     category = categoryController.createCategory(jsonCategory)
     return jsonify(category.toList())
 
-def updateCommerce(jsonCommerce):
+
+def updateCategory(jsonCommerce):
 
     category = categoryController.updateCategory(jsonCommerce)
     return jsonify(category.toList(category))
