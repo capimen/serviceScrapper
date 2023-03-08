@@ -2,6 +2,7 @@ import json
 
 from bin.plainObject.Product import Product
 from bin.plainObject.ProductList import ProductList
+from bin.controllers.ComparatorController import ComparatorController
 from bin.database.SqlHelper import SqlHelper
 
 class ProductController:
@@ -13,19 +14,19 @@ class ProductController:
 
         for row in myresultPid:
 
-            product = Product(row[0], row[1], row[2], row[3], row[4], row[5])
+            product = Product(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
 
         return product
 
 
-    def getAllProducts(self):
+    def getAllProducts(self, orderBy):
 
         sqlHelper = SqlHelper()
-        myresultPid = sqlHelper.select_product()
+        myresultPid = sqlHelper.select_product(orderBy)
         productList = ProductList()
 
         for row in myresultPid:
-            product = Product(row[0], row[1], row[2], row[3], row[4], row[5])
+            product = Product(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
             productList.addProduct(product)
 
         return productList
@@ -40,11 +41,11 @@ class ProductController:
         imgUrl = jsonProduct['imgUrl']
         status = jsonProduct['status']
         idCommerce = jsonProduct['idCommerce']
-        product = Product(id, name, referencePrice, idCategory, imgUrl, status)
+        priority = jsonProduct['priority']
+        product = Product(id, name, referencePrice, idCategory, imgUrl, status, priority)
 
         sqlHelper = SqlHelper()
         sqlHelper.insert_product(product)
-
 
 
     def updateProduct(self, jsonProduct):
@@ -62,7 +63,12 @@ class ProductController:
 
     def deleteProduct(self, productId):
         sqlHelper = SqlHelper()
-        product = sqlHelper.getProductById(productId)
+        product = self.getProductById(productId)
         product.status = False
-        productUpdated = self.updateProduct(product.toJson())
-        return not productUpdated.status
+        sqlHelper.update_product(product)
+
+        #delete from comparator
+        comparatorController = ComparatorController()
+        comparatorController.deleteComparator(productId)
+
+        return not product.status

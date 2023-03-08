@@ -7,10 +7,10 @@ from bin.database.SqlHelper import SqlHelper
 class ComparatorController:
 
 
-    def getAllComparator(self):
+    def getAllComparator(self, orderBy):
 
         sqlHelper = SqlHelper()
-        myresultPid = sqlHelper.select_comparator_all()
+        myresultPid = sqlHelper.select_comparator_all(orderBy)
         comparatorList = ComparatorList()
 
         for row in myresultPid:
@@ -46,3 +46,9 @@ class ComparatorController:
             count = row[0]
 
         return count
+
+
+    def deleteComparator(self, idProduct):
+
+        sqlHelper = SqlHelper()
+        sqlHelper.delete_comparator_by_idProduct(idProduct)

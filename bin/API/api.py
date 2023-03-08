@@ -2,6 +2,11 @@
 # encoding: utf-8
 import json
 from flask import Flask, request
+from flask_cors import CORS
+
+#esta ruta corresponde a la ruta donde se instala o ejecuta el programa
+import sys
+sys.path.append('/home/capi/Devs/python3/ServiceScrapper')
 
 from bin.API import apiProduct
 from bin.API import apiCommerce
@@ -10,7 +15,10 @@ from bin.API import apiProductCommerceDetail
 from bin.API import apiHistorical
 from bin.API import apiComparator
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*":{"origins":"*"} })
 
+
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # PRODUCT
 @app.route('/product/<id>', methods=['GET'])
@@ -20,7 +28,9 @@ def get_product(id):
 @app.route('/product/', methods=['GET'])
 def get_allProducts():
 
-    return apiProduct.getAllProduct()
+    orderBy = request.args
+    return apiProduct.getAllProduct(orderBy)
+
 
 @app.route('/product/', methods=['POST'])
 def create_product():
@@ -37,12 +47,14 @@ def update_product():
 @app.route('/product/<id>', methods=['DELETE'])
 def delete_product(id):
     status = apiProduct.deleteProduct(id)
+    print("status: " + str(status))
     resp = False
     httpStatus = 401
     if status == True:
         resp = True
         httpStatus = 200
-    return resp, httpStatus
+    #return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    return json.dumps({'status':resp}), httpStatus, {'ContentType':'application/json'}
 
 
 # COMMERCE
@@ -119,7 +131,8 @@ def get_allHistorical():
 
 @app.route('/comparator/', methods=['GET'])
 def get_comparator():
-    return apiComparator.getAllComparator()
+    orderBy = request.args
+    return apiComparator.getAllComparator(orderBy)
 
 @app.route('/comparator/count', methods=['GET'])
 def get_comparatorCount():
@@ -129,4 +142,5 @@ def get_comparatorCount():
 def get_comparatorById(id):
     return apiComparator.getComparatorById(id)
 
-app.run(debug=True)
+#app.run(debug=True)
+app.run(host="0.0.0.0")

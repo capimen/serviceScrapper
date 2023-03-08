@@ -1,10 +1,11 @@
 from flask import jsonify
 from bin.controllers.ProductController import ProductController
 
-def getAllProduct():
+def getAllProduct(orderBy):
     productController = ProductController()
-    productList = productController.getAllProducts()
+    productList = productController.getAllProducts(orderBy)
     return jsonify(productList.toList())
+
 
 
 def getProductById(idProduct):
@@ -31,6 +32,10 @@ def updateProduct(jsonProduct):
     return jsonify(product.toList(product))
 
 def deleteProduct(idProduct):
+
+    if idProduct == None:
+
+        return jsonify({'error': 'data not found'})
 
     productController = ProductController()
     status = productController.deleteProduct(idProduct)

@@ -13,17 +13,33 @@ class SqlHelper:
         self.mycursor = self.db.cursor()
 
 #CRUD PRODUCT
-    def select_product(self):
+    def select_product(self, orderBy):
+
+        orderBy_query = ' '
+        orderByLength = 1
+
+        if orderBy:
+            orderBy_query = ' order by '
+
+            for key, value in orderBy.items():
+                orderBy_query = orderBy_query + key + ' ' + value
+                if orderByLength < len(orderBy):
+                    orderByLength = orderByLength + 1
+                    orderBy_query = orderBy_query + ','
+                else:
+                    orderBy_query = orderBy_query + ';'
+                orderBy_query = orderBy_query + ' '
 
         query = "select	   p.id," \
                 "          p.name, " \
                 "          p.reference_price, " \
                 "          p.id_category, " \
                 "          p.img_url, " \
-                "          p.status " \
-                "from  	   product p " \
-                "order by p.id_category asc, " \
-                "          p.id asc;"
+                "          p.status, " \
+                "          p.priority " \
+                "from  	   product p "
+        query = query + orderBy_query
+
         self.mycursor.execute(query)
         return self.mycursor.fetchall()
 
@@ -34,7 +50,8 @@ class SqlHelper:
                 "          p.reference_price, " \
                 "          p.id_Category, " \
                 "          p.img_Url, " \
-                "          p.status " \
+                "          p.status, " \
+                "          p.priority " \
                 "from  	   product p  " \
                 "where     p.id = " + str(id) + " ;"
         self.mycursor.execute(query)
@@ -51,13 +68,22 @@ class SqlHelper:
 
             product.imgUrl = str("'"+product.imgUrl+"'")
 
+        if product.priority == None:
+
+            product.priority = "null"
+
+        else:
+
+            product.priority = str("'" + product.priority + "'")
+
         query = " INSERT INTO product " \
                 " ( " \
                 " name, " \
                 " reference_price, " \
                 " id_category, " \
                 " img_url, " \
-                " status" \
+                " status, " \
+                " priority " \
                 " ) " \
                 " VALUES " \
                 " ( " \
@@ -65,7 +91,8 @@ class SqlHelper:
                 " " + str(product.referencePrice) + "," \
                 " " + str(product.idCategory) + "," \
                 " " + product.imgUrl + "," \
-                " " + str(product.status) + "" \
+                " " + str(product.status) + ", " \
+                " " + str(product.priority) + " " \
                 " ); "
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
@@ -81,14 +108,32 @@ class SqlHelper:
 
             product.imgUrl = str("'"+product.imgUrl+"'")
 
+        if product.priority == None:
+
+            product.priority = "null"
+
+        else:
+
+            product.priority = str("'" + product.priority + "'")
+
+        if product.referencePrice == None:
+
+            product.referencePrice = "null"
+
+        else:
+
+            product.referencePrice = str("" + str(product.referencePrice) + "")
+
         query = " UPDATE product " \
                 " SET " \
                 " name = '" + product.name + "'," \
-                " reference_price = " + product.referencePrice + "',"\
+                " reference_price = " + str(product.referencePrice) + ","\
                 " id_category = " + str(product.idCategory) + ", " \
                 " img_url = " + product.imgUrl + ", " \
-                " status = " + str(product.status) + " " \
+                " status = " + str(product.status) + "," \
+                " priority = " +str(product.priority) + " " \
                 " WHERE id = " + str(product.id) + "; "
+        print(query)
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
 
@@ -295,7 +340,22 @@ class SqlHelper:
 
 #CRUD COMPARATOR
 
-    def select_comparator_all(self):
+    def select_comparator_all(self, orderBy):
+
+        orderBy_query = ' '
+        orderByLength = 1
+
+        if orderBy:
+            orderBy_query = ' order by '
+
+            for key, value in orderBy.items():
+                orderBy_query = orderBy_query + key + ' ' + value
+                if orderByLength < len(orderBy):
+                    orderByLength = orderByLength + 1
+                    orderBy_query = orderBy_query + ','
+                else:
+                    orderBy_query = orderBy_query + ';'
+                orderBy_query = orderBy_query + ' '
 
         query = " SELECT    id, " \
                 "           id_product, " \
@@ -314,7 +374,10 @@ class SqlHelper:
                 "           umbral, " \
                 "           umbral_flag, " \
                 "           reg_date " \
-                "FROM comparator ; "
+                "FROM comparator  " \
+                "order by hasstock desc, discount_percent desc"
+
+        query = query + orderBy_query
         self.mycursor.execute(query)
         return self.mycursor.fetchall()
 
@@ -348,6 +411,12 @@ class SqlHelper:
         self.mycursor.execute(query)
         return self.mycursor.fetchall()
 
+
+    def delete_comparator_by_idProduct(self, idProduct):
+        query = " DELETE FROM `scraper`.`comparator` "\
+                " WHERE id_product = "+ str(idProduct)+"; "
+        self.mycursor.execute(query)
+        self.mycursor.execute("commit;")
 
     # olds
 

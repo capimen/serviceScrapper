@@ -2,13 +2,14 @@ import json
 
 class Product:
 
-    def __init__(self, id, name, referencePrice, idCategory, imgUrl, status):
+    def __init__(self, id, name, referencePrice, idCategory, imgUrl, status, priority):
         self.id = id
         self.name = name
         self.referencePrice = referencePrice
         self.idCategory = idCategory
         self.imgUrl = imgUrl
         self.status = status
+        self.priority = priority
 
     @classmethod
     def fromJson(self, jsonProduct):
@@ -18,6 +19,7 @@ class Product:
         self.idCategory = jsonProduct['idCategory']
         self.imgUrl = jsonProduct['imgUrl']
         self.status = jsonProduct['status']
+        self.priority = jsonProduct['priority']
         return self
 
     def toJson(self):
@@ -28,6 +30,7 @@ class Product:
         arr['idCategory'] = self.idCategory
         arr['imgUrl'] = self.imgUrl
         arr['status'] = self.status
+        arr['priority'] = self.priority
         return json.dumps(arr)
 
     def toList(self):
@@ -38,6 +41,7 @@ class Product:
         arr['idCategory'] = self.idCategory
         arr['imgUrl'] = self.imgUrl
         arr['status'] = self.status
+        arr['priority'] = self.priority
         return arr
 
     def toArray(self):
@@ -48,6 +52,7 @@ class Product:
         arr.append(self.idCategory)
         arr.append(self.imgUrl)
         arr.append(self.status)
+        arr.append(self.priority)
         return arr
 
 
