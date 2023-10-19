@@ -4,7 +4,7 @@ class Comparator:
 
     def __init__(self, id, id_product, product_name, price_newest, price_average, price_best,
                  price_worst, discount_priceleft, discount_percent, average_safe, average_safe_worst,
-                 diff_best, url, best_historical_flag, umbral, umbral_flag, reg_date):
+                 diff_best, url, best_historical_flag, umbral, umbral_flag, reg_date, umbral_priceReference):
         self.id = id
         self.id_product = id_product
         self.product_name  = product_name
@@ -22,6 +22,7 @@ class Comparator:
         self.umbral = umbral
         self.umbral_flag = umbral_flag
         self.reg_date = reg_date
+        self.umbral_priceReference = umbral_priceReference
 
     @classmethod
     def fromJson(self, jsonComnparator):
@@ -43,6 +44,7 @@ class Comparator:
         self.umbral = jsonComnparator['umbral']
         self.umbral_flag = jsonComnparator['umbral_flag']
         self.reg_date = jsonComnparator['reg_date']
+        self.umbral_priceReference = jsonComnparator['umbral_priceReference']
         return self
 
     def toJson(self):
@@ -64,6 +66,7 @@ class Comparator:
         arr['umbral'] = self.umbral
         arr['umbral_flag'] = self.umbral_flag
         arr['reg_date'] = self.reg_date
+        arr['umbral_priceReference'] = self.umbral_priceReference
         return json.dumps(arr)
 
     def toList(self):
@@ -85,6 +88,7 @@ class Comparator:
         arr['umbral'] = self.umbral
         arr['umbral_flag'] = self.umbral_flag
         arr['reg_date'] = self.reg_date
+        arr['umbral_priceReference'] = self.umbral_priceReference
         return arr
 
     def toArray(self):
@@ -106,6 +110,7 @@ class Comparator:
         arr.append(self.umbral)
         arr.append(self.umbral_flag)
         arr.append(self.reg_date)
+        arr.append(self.umbral_priceReference)
         return arr
 
 

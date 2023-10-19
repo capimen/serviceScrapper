@@ -19,7 +19,7 @@ class ComparatorController:
             #price_worst, discount_priceleft, discount_percent, average_safe, average_safe_worst,
             #diff_best, url, best_historical_flag, umbral, umbral_flag, reg_date
             comparator = Comparator(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
-                                    row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16])
+                                    row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17])
             comparatorList.addComparator(comparator)
 
         return comparatorList
@@ -33,7 +33,7 @@ class ComparatorController:
         for row in myresultPid:
 
             comparator = Comparator(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
-                                    row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16])
+                                    row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17])
 
         return comparator
 

@@ -14,6 +14,7 @@ from bin.API import apiCategory
 from bin.API import apiProductCommerceDetail
 from bin.API import apiHistorical
 from bin.API import apiComparator
+from bin.API import apiExcecutionDate
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*":{"origins":"*"} })
 
@@ -141,6 +142,10 @@ def get_comparatorCount():
 @app.route('/comparator/<id>', methods=['GET'])
 def get_comparatorById(id):
     return apiComparator.getComparatorById(id)
+
+@app.route('/excecutioDate/last', methods=['GET'])
+def get_LastExcecution():
+    return apiExcecutionDate.getExcecutionDate()
 
 #app.run(debug=True)
 app.run(host="0.0.0.0")

@@ -2,6 +2,7 @@ import json
 
 from bin.plainObject.Product import Product
 from bin.plainObject.ProductList import ProductList
+from bin.plainObject.ProductCommerceDetail import ProductCommerceDetail
 from bin.controllers.ComparatorController import ComparatorController
 from bin.database.SqlHelper import SqlHelper
 
@@ -32,20 +33,34 @@ class ProductController:
         return productList
 
 
+    # Esta API tiene que hacer más cosas para poder insertar un producto
+    # ya que no basta con solo insertar el producto, tambien
+    # debe insertar la relación con el el detallle_comercio
     def createProduct(self, jsonProduct):
 
-        id = jsonProduct['id']
+        #id = jsonProduct['id']
+        id = None
         name = jsonProduct['name']
         referencePrice = jsonProduct['referencePrice']
         idCategory = jsonProduct['idCategory']
         imgUrl = jsonProduct['imgUrl']
-        status = jsonProduct['status']
+        #status = jsonProduct['status']
+        status = True
         idCommerce = jsonProduct['idCommerce']
         priority = jsonProduct['priority']
+        urlCommerce = jsonProduct['urlCommerce']
         product = Product(id, name, referencePrice, idCategory, imgUrl, status, priority)
+
 
         sqlHelper = SqlHelper()
         sqlHelper.insert_product(product)
+        myresultPid = sqlHelper.select_newest_product_id()
+        for row in myresultPid:
+            product.id = str(row[0])
+        productCommerceDetail = ProductCommerceDetail(None, product.id, idCommerce, urlCommerce)
+        sqlHelper.insert_product_commerce_detail(productCommerceDetail)
+
+        return product;
 
 
     def updateProduct(self, jsonProduct):

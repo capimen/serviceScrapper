@@ -94,6 +94,7 @@ class SqlHelper:
                 " " + str(product.status) + ", " \
                 " " + str(product.priority) + " " \
                 " ); "
+        print(query)
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
 
@@ -138,6 +139,14 @@ class SqlHelper:
         self.mycursor.execute("commit;")
 
 
+    def select_newest_product_id(self):
+
+        query = " Select id " \
+			    " from `scraper`.`product` " \
+			    " order by 1 desc "\
+			    " limit 1 ";
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
 
 
 #CRUD PRODUCT_COMMERCE-DETAIL
@@ -182,9 +191,8 @@ class SqlHelper:
                 "    ( " \
                 "         " + str(productCommerceDetail.idProduct) + ", " \
                 "         " + str(productCommerceDetail.idCommerce)+", " \
-                "         " + str(productCommerceDetail.url)+ "" \
+                "         '" + str(productCommerceDetail.url)+ "'" \
                 "    );"
-
         self.mycursor.execute(query)
         self.mycursor.execute("commit;")
 
@@ -373,9 +381,11 @@ class SqlHelper:
                 "           best_historical_flag, " \
                 "           umbral, " \
                 "           umbral_flag, " \
-                "           reg_date " \
+                "           reg_date, " \
+                "           umbral_priceReference, " \
+                "           umbral_flag + best_historical_flag + umbral_priceReference as ordernamientoTemp " \
                 "FROM comparator  " \
-                "order by hasstock desc, discount_percent desc"
+                "order by hasstock desc, ordernamientoTemp desc,  discount_percent desc"
 
         query = query + orderBy_query
         self.mycursor.execute(query)
@@ -399,7 +409,8 @@ class SqlHelper:
                 "           best_historical_flag, " \
                 "           umbral, " \
                 "           umbral_flag, " \
-                "           reg_date " \
+                "           reg_date, " \
+                "           umbral_priceReference " \
                 "FROM comparator " \
                 "WHERE id = " + str(idProduct) + " ;"
         self.mycursor.execute(query)
@@ -613,6 +624,8 @@ class SqlHelper:
         self.mycursor.execute("commit;")
 
 
+
+
     def select_comparator(self):
         query = "SELECT id," \
                 "       product_id," \
@@ -632,6 +645,23 @@ class SqlHelper:
                 "FROM `scraper`.`comparator`;"
         self.mycursor.execute(query)
         return self.mycursor.fetchall()
+
+
+    def select_newest_excecution(self):
+        query = " Select reg_date " \
+                " from `scraper`.`historical` " \
+                " order by reg_date desc " \
+                " limit 1 ";
+        self.mycursor.execute(query)
+        return self.mycursor.fetchall()
+
+
+
+
+
+
+
+
 
 
 #deprecated
